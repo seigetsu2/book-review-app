@@ -9,6 +9,7 @@ export const SignIn: React.FC = () => {
         <input
           id="email"
           type="email"
+          placeholder="メールアドレス"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -18,6 +19,7 @@ export const SignIn: React.FC = () => {
         <input
           id="password"
           type="password"
+          placeholder="パスワード"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
