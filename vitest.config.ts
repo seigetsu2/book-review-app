@@ -1,4 +1,5 @@
 import { defineConfig, configDefaults } from "vitest/config";
+import path from "path";
 
 export default defineConfig({
   test: {
@@ -6,5 +7,10 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: "./tests/components/setup.ts",
     exclude: [...configDefaults.exclude, "./tests/e2e/*"],
+  },
+  resolve: {
+    alias: {
+      "~": path.resolve(import.meta.dirname, "./src"),
+    },
   },
 });
