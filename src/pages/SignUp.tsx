@@ -3,6 +3,8 @@ import type { SubmitHandler } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { signUp } from "~/data/api";
+import { AppInput } from "~/components/AppInput";
+import { AppButton } from "~/components/AppButton";
 
 type SignUpInfo = {
   name: string;
@@ -16,9 +18,8 @@ export const SignUp = () => {
     mutationFn: (info: SignUpInfo) => {
       return signUp(info.name, info.email, info.password);
     },
-    onSuccess: async (data) => {
-      const json = await data.json();
-      setResult(JSON.stringify(json));
+    onSuccess: (data) => {
+      setResult(JSON.stringify(data));
     },
   });
   const [result, setResult] = useState("");
@@ -27,36 +28,33 @@ export const SignUp = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label htmlFor="name">ユーザー名</label>
-        <input
-          placeholder="ユーザー名"
-          id="name"
-          autoComplete="off"
-          {...register("name", { required: true })}
-        />
-      </div>
-      <div>
-        <label htmlFor="email">メールアドレス</label>
-        <input
-          type="email"
-          id="email"
-          autoComplete="off"
-          placeholder="メールアドレス"
-          {...register("email", { required: true })}
-        />
-      </div>
-      <div>
-        <label htmlFor="password">パスワード</label>
-        <input
-          id="password"
-          type="password"
-          placeholder="パスワード"
-          {...register("password", { required: true })}
-        />
-      </div>
-      <button type="submit">ユーザー作成</button>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="mx-auto max-w-md space-y-4 rounded-lg border border-gray-300 bg-gray-100 p-6 h-fit"
+    >
+      <AppInput
+        label="ユーザー名"
+        placeholder="ユーザー名"
+        id="name"
+        autoComplete="off"
+        {...register("name", { required: true })}
+      />
+      <AppInput
+        label="メールアドレス"
+        type="email"
+        id="email"
+        autoComplete="off"
+        placeholder="メールアドレス"
+        {...register("email", { required: true })}
+      />
+      <AppInput
+        label="パスワード"
+        id="password"
+        type="password"
+        placeholder="パスワード"
+        {...register("password", { required: true })}
+      />
+      <AppButton type="submit">ユーザー作成</AppButton>
       {mutation.isError ? (
         <div>An error occurred: {mutation.error.message}</div>
       ) : null}
