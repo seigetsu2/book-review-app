@@ -27,7 +27,7 @@ export const Home = () => {
     return <span>Error: {error.message}</span>;
   }
   return (
-    <div className="space-y-6 p-6 pb-0 after:block after:h-6 h-screen">
+    <div className="space-y-6 p-6 pb-0 after:block after:h-6">
       {data?.map((value) => {
         const { id, title, url, reviewer, review } = value;
         return (

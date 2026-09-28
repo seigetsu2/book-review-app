@@ -1,24 +1,43 @@
-import { createBrowserRouter, Outlet } from "react-router";
+import {
+  createBrowserRouter,
+  redirect,
+  type MiddlewareFunction,
+} from "react-router";
+
 import { Home } from "~/pages/Home";
 import { SignIn } from "~/pages/SignIn";
 import { SignUp } from "~/pages/SignUp";
-import { SideBar } from "~/components/SideBar";
-
+import { RootPage } from "~/pages/RootPage";
+import { getToken } from "~/data/storage";
+const authMiddleware: MiddlewareFunction = () => {
+  const token = getToken();
+  if (token) {
+    throw redirect("/");
+  }
+};
+export const tokenLoader = () => {
+  return getToken();
+};
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <div className="flex">
-        <SideBar />
-        <div className="flex flex-1 items-center justify-center overflow-auto">
-          <Outlet />
-        </div>
-      </div>
-    ),
+    loader: tokenLoader,
+    Component: RootPage,
     children: [
-      { index: true, Component: Home },
-      { path: "signup", Component: SignUp },
-      { path: "login", Component: SignIn },
+      {
+        index: true,
+        Component: Home,
+      },
+      {
+        path: "signup",
+        middleware: [authMiddleware],
+        Component: SignUp,
+      },
+      {
+        path: "login",
+        middleware: [authMiddleware],
+        Component: SignIn,
+      },
     ],
   },
 ]);
