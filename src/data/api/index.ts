@@ -59,7 +59,6 @@ export const getBooks: (offset: number) => Promise<BookData[]> = async (
     throw new Error(`HTTP error. code: ${response.status}`);
   }
   const result = await response.json();
-  console.log(result);
   return result;
 };
 
@@ -70,4 +69,26 @@ export type BookData = {
   detail: "string";
   review: "string";
   reviewer: "string";
+};
+
+export const getUser: (token: string) => Promise<UserData> = async (
+  token: string,
+) => {
+  const response = await fetch(baseUrl + "/users", {
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP error. code: ${response.status}`);
+  }
+  const result = await response.json();
+  console.log(result);
+  return result;
+};
+
+export type UserData = {
+  name: "string";
+  iconUrl?: "string";
 };
